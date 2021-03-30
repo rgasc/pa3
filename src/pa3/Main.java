@@ -1,4 +1,4 @@
-package sample;
+package pa3;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -9,15 +9,18 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+    public void start(Stage primaryStage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("pa3.fxml"));
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 600, 600));
         primaryStage.show();
     }
 
-
     public static void main(String[] args) {
+        Controller controller = new Controller();
+        controller.firstStep(323);
+
         launch(args);
     }
+
 }
