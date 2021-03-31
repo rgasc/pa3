@@ -17,10 +17,9 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        Controller controller = new Controller();
-        controller.firstStep(323);
-
         launch(args);
-    }
 
+        Controller controller = new Controller();
+        controller.initialize();
+    }
 }
