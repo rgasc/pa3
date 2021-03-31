@@ -1,6 +1,8 @@
 package pa3;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
 import java.math.BigInteger;
@@ -12,14 +14,23 @@ public class Controller {
     @FXML
     private Text EOutputValue;
 
-    private int n = 59503;
+    @FXML
+    private TextField messageField;
 
-    private BigInteger p;
-    private BigInteger q;
+    @FXML
+    private TextArea encryptedMessage;
+
+    private int n = 323;
+
+    private BigInteger p = BigInteger.valueOf(17);
+    private BigInteger q = BigInteger.valueOf(19);
+    private BigInteger e;
 
     public void initialize() {
-        calculatePQ();
-        calculateE();
+        encryptedMessage.setWrapText(true); //WHY THE FUCK DO I HAVE TO SET IT LIKE THIS, AND NOT JUST ON THE ELEMENT IN THE FUCKING FXML FILE
+
+//        calculatePQ();
+//        calculateE();
     }
 
     private void calculatePQ() {
@@ -55,7 +66,6 @@ public class Controller {
     @FXML
     private void calculateE() {
         BigInteger temp = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
-        BigInteger e = BigInteger.ONE;
 
 //        This works, but almost always gives 5, so we made a different solution
 //        for (BigInteger x = BigInteger.valueOf(3); temp.compareTo(x) > 0; x = x.add(BigInteger.ONE)) {
@@ -80,5 +90,57 @@ public class Controller {
         EOutputValue.setText("e is " + e.toString());
 
         System.out.println("e = " + e.toString() + " (click to regenerate)");
+    }
+
+    @FXML
+    private void encryptMessage(){
+        //check if e is set
+        if (e == null){
+            encryptedMessage.setText("e not calculated, please calculate e first. ");
+        }
+        else{
+            String text = messageField.getText();
+
+            //check if message is set
+            if (text.length() == 0){
+                encryptedMessage.setText("No message given ");
+            }
+            else{
+                ArrayList<BigInteger> resultList = new ArrayList<>();
+
+                //encrypt all chars
+                for (char character: text.toCharArray()) {
+                    BigInteger charNumber = BigInteger.valueOf((int)character);
+
+                    BigInteger result = pow(charNumber, e).mod(BigInteger.valueOf(n));
+
+                    resultList.add(result);
+                }
+
+                //use string builder for output generation of final crypt string.
+                StringBuilder stringBuilder = new StringBuilder();
+                for (BigInteger result: resultList) {
+                    stringBuilder.append(result.toString());
+                    stringBuilder.append(", ");
+                }
+                stringBuilder.setLength(stringBuilder.length() - 2);
+                String resultString = stringBuilder.toString();
+
+                System.out.println("encryptedMessage: " + resultString);
+
+                encryptedMessage.setText(resultString);
+            }
+        }
+    }
+
+    //method for calculating power on BigIntegers
+    BigInteger pow(BigInteger base, BigInteger exponent) {
+        BigInteger result = BigInteger.ONE;
+        while (exponent.signum() > 0) {
+            if (exponent.testBit(0)) result = result.multiply(base);
+            base = base.multiply(base);
+            exponent = exponent.shiftRight(1);
+        }
+        return result;
     }
 }
