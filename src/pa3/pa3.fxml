@@ -167,14 +167,14 @@
                                   <Font size="16.0" />
                               </font>
                           </Text>
-                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="inputNDecrypt" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Input E:" translateX="10.0" wrappingWidth="100.13671875" GridPane.rowIndex="3">
                                     <font>
                                         <Font size="16.0" />
                                     </font>
                                 </Text>
-                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="329.0" text="Calculate D" GridPane.columnSpan="2" GridPane.rowIndex="4">
+                                <TextField fx:id="inputEDecrypt" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Button mnemonicParsing="false" onAction="#calculateD" prefHeight="26.0" prefWidth="329.0" text="Calculate D" GridPane.columnSpan="2" GridPane.rowIndex="4">
                            <GridPane.margin>
                               <Insets left="10.0" />
                            </GridPane.margin>
@@ -184,7 +184,7 @@
                               <Font size="16.0" />
                            </font>
                         </Text>
-                        <TextField prefHeight="60.0" prefWidth="269.0" GridPane.columnSpan="2" GridPane.rowIndex="6">
+                        <TextField fx:id="dOutput" prefHeight="60.0" prefWidth="269.0" GridPane.columnSpan="2" GridPane.rowIndex="6">
                            <GridPane.margin>
                               <Insets left="10.0" />
                            </GridPane.margin>

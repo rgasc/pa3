@@ -5,6 +5,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
+import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,15 @@ public class Controller {
 
     @FXML
     private TextArea encryptedMessage;
+
+    @FXML
+    private TextField inputNDecrypt;
+
+    @FXML
+    private TextField inputEDecrypt;
+
+    @FXML
+    private TextField dOutput;
 
     private int n = 323;
 
@@ -143,4 +153,59 @@ public class Controller {
         }
         return result;
     }
+
+    @FXML
+    private void calculateD(){
+        String nString = inputNDecrypt.getText();
+        String eString = inputEDecrypt.getText();
+
+        if (nString.isEmpty() || eString.isEmpty()){
+            System.out.println("n or e empty");
+
+            dOutput.setText("n or e empty");
+            return;
+        }
+
+        BigInteger n = BigInteger.valueOf(Long.parseLong(nString));
+        BigInteger e = BigInteger.valueOf(Long.parseLong(eString));
+
+//        BigInteger[] pq = calculatePQForDecrypt(n);
+
+//        BigInteger p = pq[0];
+//        BigInteger q = pq[1];
+
+        BigInteger p = BigInteger.valueOf(17);
+        BigInteger q = BigInteger.valueOf(19);
+
+        BigInteger phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
+
+        BigInteger d = e.modInverse(phi);
+
+        System.out.println("d = " + d.toString());
+
+        dOutput.setText("d is " + d.toString());
+    }
+
+//    private BigInteger[] calculatePQForDecrypt(BigInteger n) {
+//        List<Integer> factors = findPrimeFactors(n);
+//
+//        if (factors.size() <= 2) {
+//            BigInteger p = new BigInteger(String.valueOf(factors.get(0)));
+//            BigInteger q = new BigInteger(String.valueOf(factors.get(1)));
+//            System.out.printf("p is %d\nq is %d\n", factors.get(0), factors.get(1));
+//
+//        } else {
+//            BigInteger p = new BigInteger(String.valueOf(1));
+//            BigInteger q = new BigInteger(String.valueOf(1));
+//
+//            System.out.println("This number does not have 2 prime factors");
+//        }
+//
+//        BigInteger[] test = new BigInteger[2];
+//        test[0] = p;
+//        test[1] = q;
+//
+//        return test;
+//    }
+
 }
