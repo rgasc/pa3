@@ -101,7 +101,7 @@ public class Controller {
 
     @FXML
     private void calculateE() {
-        if (p == null && q == null) {
+        if (p == null || q == null) {
             EOutputValue.setText("Calculate p and q first");
             return;
         }
@@ -200,13 +200,10 @@ public class Controller {
         BigInteger n = BigInteger.valueOf(Long.parseLong(nString));
         BigInteger e = BigInteger.valueOf(Long.parseLong(eString));
 
-//        BigInteger[] pq = calculatePQForDecrypt(n);
+        BigInteger[] pq = calculatePQForDecrypt(n);
 
-//        BigInteger p = pq[0];
-//        BigInteger q = pq[1];
-
-        BigInteger p = BigInteger.valueOf(17);
-        BigInteger q = BigInteger.valueOf(19);
+        BigInteger p = pq[0];
+        BigInteger q = pq[1];
 
         BigInteger phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
 
@@ -217,26 +214,26 @@ public class Controller {
         dOutput.setText("d is " + d.toString());
     }
 
-//    private BigInteger[] calculatePQForDecrypt(BigInteger n) {
-//        List<Integer> factors = findPrimeFactors(n);
-//
-//        if (factors.size() <= 2) {
-//            BigInteger p = new BigInteger(String.valueOf(factors.get(0)));
-//            BigInteger q = new BigInteger(String.valueOf(factors.get(1)));
-//            System.out.printf("p is %d\nq is %d\n", factors.get(0), factors.get(1));
-//
-//        } else {
-//            BigInteger p = new BigInteger(String.valueOf(1));
-//            BigInteger q = new BigInteger(String.valueOf(1));
-//
-//            System.out.println("This number does not have 2 prime factors");
-//        }
-//
-//        BigInteger[] test = new BigInteger[2];
-//        test[0] = p;
-//        test[1] = q;
-//
-//        return test;
-//    }
+    private BigInteger[] calculatePQForDecrypt(BigInteger n) {
+        List<BigInteger> factors = findPrimeFactors(n);
+
+        BigInteger p;
+        BigInteger q;
+
+        if (factors.size() <= 2) {
+            p = new BigInteger(String.valueOf(factors.get(0)));
+            q = new BigInteger(String.valueOf(factors.get(1)));
+
+        } else {
+            p = new BigInteger(String.valueOf(17));
+            q = new BigInteger(String.valueOf(19));
+        }
+
+        BigInteger[] results = new BigInteger[2];
+        results[0] = p;
+        results[1] = q;
+
+        return results;
+    }
 
 }
