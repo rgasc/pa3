@@ -26,7 +26,7 @@ public class Controller {
     @FXML
     private TextArea encryptedMessage;
 
-    private int n;
+    private BigInteger n;
     private BigInteger p;
     private BigInteger q;
     private BigInteger e;
@@ -50,10 +50,10 @@ public class Controller {
             input = inputN.getText();
         }
 
-        n = Integer.parseInt(input);
+        n = BigInteger.valueOf(Integer.parseInt(input));
 
         long start = System.nanoTime();
-        List<Integer> factors = findPrimeFactors(n);
+        List<BigInteger> factors = findPrimeFactors(n);
         long end = System.nanoTime();
 
         if (factors.size() > 2) {
@@ -73,17 +73,17 @@ public class Controller {
         System.out.println(result);
     }
 
-    private List<Integer> findPrimeFactors(int n) {
-        List<Integer> factors = new ArrayList<>();
+    private List<BigInteger> findPrimeFactors(BigInteger n) {
+        List<BigInteger> factors = new ArrayList<>();
 
-        for (int i = 2; i < n; i++) {
-            while (n % i == 0) {
+        for (BigInteger i = BigInteger.TWO; i.compareTo(n) < 0; i = i.add(BigInteger.ONE)) {
+            while (n.mod(i).equals(BigInteger.ZERO)) {
                 factors.add(i);
-                n /= i;
+                n = n.divide(i);
             }
         }
 
-        if (n > 2) factors.add(n);
+        if (n.compareTo(BigInteger.TWO) > 0) factors.add(n);
 
         return factors;
     }
@@ -142,7 +142,7 @@ public class Controller {
                 for (char character: text.toCharArray()) {
                     BigInteger charNumber = BigInteger.valueOf((int)character);
 
-                    BigInteger result = pow(charNumber, e).mod(BigInteger.valueOf(n));
+                    BigInteger result = pow(charNumber, e).mod(n);
 
                     resultList.add(result);
                 }
