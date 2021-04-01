@@ -13,6 +13,12 @@ import java.util.List;
 public class Controller {
 
     @FXML
+    private TextArea resultPQ;
+
+    @FXML
+    private TextField inputN;
+
+    @FXML
     private Text EOutputValue;
 
     @FXML
@@ -30,51 +36,76 @@ public class Controller {
     @FXML
     private TextField dOutput;
 
-    private int n = 323;
-
-    private BigInteger p = BigInteger.valueOf(17);
-    private BigInteger q = BigInteger.valueOf(19);
+    private BigInteger n;
+    private BigInteger p;
+    private BigInteger q;
     private BigInteger e;
 
     public void initialize() {
-        encryptedMessage.setWrapText(true); //WHY THE FUCK DO I HAVE TO SET IT LIKE THIS, AND NOT JUST ON THE ELEMENT IN THE FUCKING FXML FILE
+        encryptedMessage.setWrapText(true);
 
-//        calculatePQ();
-//        calculateE();
+        resultPQ.setWrapText(true);
     }
 
+    @FXML
     private void calculatePQ() {
+        String input = inputN.getText();
+
+        if (input.isEmpty()) {
+            resultPQ.setText("Please enter a value for n");
+            return;
+        }
+
+        if (!input.matches("\\d*")) {
+            inputN.setText(input.replaceAll("[^\\d]", ""));
+            input = inputN.getText();
+        }
+
+        n = BigInteger.valueOf(Integer.parseInt(input));
+
         long start = System.nanoTime();
-        List<Integer> factors = findPrimeFactors(n);
+        List<BigInteger> factors = findPrimeFactors(n);
         long end = System.nanoTime();
 
-        if (factors.size() <= 2) {
-            p = new BigInteger(String.valueOf(factors.get(0)));
-            q = new BigInteger(String.valueOf(factors.get(1)));
-            System.out.printf("p is %d\nq is %d\n", factors.get(0), factors.get(1));
-            System.out.printf("Amount of time busy finding p and q: %fms\n", (double) (end - start) / 1000000);
-        } else {
-            System.out.println("This number does not have 2 prime factors");
+        if (factors.size() > 2) {
+            resultPQ.setText("This number does not have 2 prime factors");
+            p = null;
+            q = null;
+            return;
         }
+
+        p = new BigInteger(String.valueOf(factors.get(0)));
+        q = new BigInteger(String.valueOf(factors.get(1)));
+
+        String result = "p is " + factors.get(0) + "\nq is " + factors.get(1);
+        result += "\nAmount of time busy finding p and q: " + (double) (end - start) / 1000000 + "ms\n";
+
+        resultPQ.setText(result);
+        System.out.println(result);
     }
 
-    private List<Integer> findPrimeFactors(int n) {
-        List<Integer> factors = new ArrayList<>();
+    private List<BigInteger> findPrimeFactors(BigInteger n) {
+        List<BigInteger> factors = new ArrayList<>();
 
-        for (int i = 2; i < n; i++) {
-            while (n % i == 0) {
+        for (BigInteger i = BigInteger.TWO; i.compareTo(n) < 0; i = i.add(BigInteger.ONE)) {
+            while (n.mod(i).equals(BigInteger.ZERO)) {
                 factors.add(i);
-                n /= i;
+                n = n.divide(i);
             }
         }
 
-        if (n > 2) factors.add(n);
+        if (n.compareTo(BigInteger.TWO) > 0) factors.add(n);
 
         return factors;
     }
 
     @FXML
     private void calculateE() {
+        if (p == null && q == null) {
+            EOutputValue.setText("Calculate p and q first");
+            return;
+        }
+
         BigInteger temp = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
 
 //        This works, but almost always gives 5, so we made a different solution
@@ -122,7 +153,7 @@ public class Controller {
                 for (char character: text.toCharArray()) {
                     BigInteger charNumber = BigInteger.valueOf((int)character);
 
-                    BigInteger result = pow(charNumber, e).mod(BigInteger.valueOf(n));
+                    BigInteger result = pow(charNumber, e).mod(n);
 
                     resultList.add(result);
                 }
