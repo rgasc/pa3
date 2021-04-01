@@ -34,15 +34,25 @@ public class Controller {
     private TextField inputEDecrypt;
 
     @FXML
-    private TextField dOutput;
+    private TextArea dOutput;
+
+    @FXML
+    private TextArea decryptMessage;
+
+    @FXML
+    private TextArea outputDecrypt;
 
     private BigInteger n;
     private BigInteger p;
     private BigInteger q;
     private BigInteger e;
+    private BigInteger d;
 
     public void initialize() {
         encryptedMessage.setWrapText(true);
+        dOutput.setWrapText(true);
+        decryptMessage.setWrapText(true);
+        outputDecrypt.setWrapText(true);
 
         resultPQ.setWrapText(true);
     }
@@ -162,9 +172,9 @@ public class Controller {
                 StringBuilder stringBuilder = new StringBuilder();
                 for (BigInteger result: resultList) {
                     stringBuilder.append(result.toString());
-                    stringBuilder.append(", ");
+                    stringBuilder.append(",");
                 }
-                stringBuilder.setLength(stringBuilder.length() - 2);
+                stringBuilder.setLength(stringBuilder.length() - 1);
                 String resultString = stringBuilder.toString();
 
                 System.out.println("encryptedMessage: " + resultString);
@@ -207,7 +217,7 @@ public class Controller {
 
         BigInteger phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
 
-        BigInteger d = e.modInverse(phi);
+        d = e.modInverse(phi);
 
         System.out.println("d = " + d.toString());
 
@@ -236,4 +246,32 @@ public class Controller {
         return results;
     }
 
+    @FXML
+    private void decryptingCypher(){
+        String message = decryptMessage.getText();
+        String nString = inputNDecrypt.getText();
+
+        if (message.isEmpty() || nString.isEmpty() || d == null){
+            outputDecrypt.setText("Message is empty or N is empty or D is empty");
+            return;
+        }
+
+        BigInteger n = BigInteger.valueOf(Long.parseLong(nString));
+        String[] messageArray = message.split(",");
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (String text: messageArray) {
+            BigInteger value = BigInteger.valueOf(Long.parseLong(text));
+
+            BigInteger result = pow(value, d).mod(n);
+
+            char c = (char) result.intValue();
+
+            stringBuilder.append(c);
+        }
+        String outputString = stringBuilder.toString();
+
+        outputDecrypt.setText(outputString);
+    }
 }

@@ -62,7 +62,7 @@
                                  </GridPane.margin></TextField>
                                     </children>
                                 </GridPane>
-                                <Button mnemonicParsing="false" onAction="#calculatePQ" prefHeight="26.0" prefWidth="269.0" text="Calculate P" GridPane.rowIndex="3">
+                                <Button mnemonicParsing="false" onAction="#calculatePQ" prefHeight="26.0" prefWidth="269.0" text="Calculate P and Q" GridPane.rowIndex="3">
                                     <padding>
                                         <Insets left="10.0" right="10.0" />
                                     </padding>
@@ -181,22 +181,22 @@
                               <Font size="16.0" />
                            </font>
                         </Text>
-                        <TextField fx:id="dOutput" prefHeight="60.0" prefWidth="269.0" GridPane.columnSpan="2" GridPane.rowIndex="6">
+                        <TextArea fx:id="dOutput" prefHeight="60.0" prefWidth="269.0" GridPane.columnSpan="2" GridPane.rowIndex="6">
                            <GridPane.margin>
                               <Insets left="10.0" />
                            </GridPane.margin>
-                        </TextField>
+                        </TextArea>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Decrypt Message" textAlignment="CENTER" wrappingWidth="288.13671875" GridPane.rowIndex="7">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Text>
-                        <TextField layoutX="20.0" layoutY="221.0" prefHeight="60.0" prefWidth="269.0" GridPane.columnSpan="2" GridPane.rowIndex="8">
+                        <TextArea fx:id="decryptMessage" layoutX="20.0" layoutY="221.0" prefHeight="60.0" prefWidth="269.0" GridPane.columnSpan="2" GridPane.rowIndex="8">
                            <GridPane.margin>
                               <Insets left="10.0" />
                            </GridPane.margin>
-                        </TextField>
-                        <Button layoutX="20.0" layoutY="156.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="329.0" text="Decrypt cypher" GridPane.columnSpan="2" GridPane.rowIndex="9">
+                        </TextArea>
+                        <Button layoutX="20.0" layoutY="156.0" mnemonicParsing="false" onAction="#decryptingCypher" prefHeight="26.0" prefWidth="329.0" text="Decrypt cypher" GridPane.columnSpan="2" GridPane.rowIndex="9">
                            <GridPane.margin>
                               <Insets left="10.0" />
                            </GridPane.margin>
@@ -206,11 +206,11 @@
                               <Font size="16.0" />
                            </font>
                         </Text>
-                        <TextField layoutX="20.0" layoutY="338.0" prefHeight="87.0" prefWidth="269.0" GridPane.columnSpan="2" GridPane.rowIndex="11">
+                        <TextArea fx:id="outputDecrypt" layoutX="20.0" layoutY="338.0" prefHeight="87.0" prefWidth="269.0" GridPane.columnSpan="2" GridPane.rowIndex="11">
                            <GridPane.margin>
                               <Insets left="10.0" />
                            </GridPane.margin>
-                        </TextField>
+                        </TextArea>
                             </children>
                         </GridPane>
                     </children>
